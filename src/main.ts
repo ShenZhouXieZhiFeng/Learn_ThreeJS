@@ -1,6 +1,6 @@
 /// <reference path='typings/tsd.d.ts' />
-import { sayHello } from './greet';
-import Cube from './cube';
+import { sayHello } from './app/greet';
+import Cube from './app/cube';
 
 // a cube object
 let cube = new Cube('#3dcube');
