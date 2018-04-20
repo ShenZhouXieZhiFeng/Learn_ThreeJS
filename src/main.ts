@@ -1,20 +1,12 @@
 /// <reference path='typings/tsd.d.ts' />
-import * as load from 'loader.js';
 import Entrance from './app/Entrance';
 
-let win:any = window as any;
+let win: any = window as any;
 
-console.log(win);
+//let scene: THREE.Scene = win.scene;
+//let camera: THREE.Camera = win.camera;
+//let render: THREE.WebGLRenderer = win.renderer;
 
-let camera = win.camera;
-console.log(camera);
-
-//console.log(THREE.REVISION);
-//console.log(THREE.camera);
-
-//let enter = new Entrance();
-//enter.show();
-
-console.log("ok");
-
+let enter: Entrance = new Entrance(win);
+enter.show();
 
