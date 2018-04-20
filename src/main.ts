@@ -1,17 +1,10 @@
 /// <reference path='typings/tsd.d.ts' />
-import Entrance from './app/Entrance';
+import GameMain from './app/GameMain';
 
 let win: any = window as any;
 
-//var scene;
-//var camera;
-//var renderer;
-//var loader;
-
 win.main_start = (scene, camera, renderer) =>
 {
-    let enter: Entrance = new Entrance(win, scene, camera, renderer);
-    enter.show();
+    GameMain.instance.Init(win, scene, camera, renderer)
 }
-
 console.log("main.ts loader");

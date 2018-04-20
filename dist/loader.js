@@ -12,7 +12,7 @@ var loadComplete = false;
 
 //var rootPath = "obj/Sky_Cubemap";
 //E:/work/projects/Github/Learn_ThreeJS/dist/obj/
-var rootPath = "obj/02";
+var rootPath = "obj/01";
 
 function onStartEnd()
 {
@@ -120,8 +120,13 @@ var delta;
 var cameraThenPos = new THREE.Vector3(), cameraNowPos = new THREE.Vector3();
 
 function update() {
-    requestAnimationFrame(update);
-
+    if (camera == null)
+        return;
+    renderer.render(scene, camera);
+    //console.log("update");
+    //这边的持续更新被停用，在ts中调用更新
+    return;
+    //requestAnimationFrame(update);
     //渲染优化,1.间隔渲染; 2.判断相机有无运动,无运动则停止渲染
     now = Date.now();
     delta = now - then;
@@ -232,16 +237,16 @@ function initInfo(node) {
         scene.updateMatrixWorld(true);
         //renderer = new THREE.WebGLRenderer();
 
-        controls = new THREE.OrbitControls(camera);
+        //controls = new THREE.OrbitControls(camera);
 
-        //判断相机下是否有CameraTarget子物体,CameraTarget用于设置相机初始化聚焦点
-        var cameraTarget = camera.getObjectByName("CameraTarget");
-        if (cameraTarget != null) {
-            var cameraTargetPosition = new THREE.Vector3();
-            cameraTargetPosition.setFromMatrixPosition(cameraTarget.matrixWorld);
-            camera.lookAt(cameraTargetPosition);
-            controls.target = cameraTargetPosition;
-        }
+        ////判断相机下是否有CameraTarget子物体,CameraTarget用于设置相机初始化聚焦点
+        //var cameraTarget = camera.getObjectByName("CameraTarget");
+        //if (cameraTarget != null) {
+        //    var cameraTargetPosition = new THREE.Vector3();
+        //    cameraTargetPosition.setFromMatrixPosition(cameraTarget.matrixWorld);
+        //    camera.lookAt(cameraTargetPosition);
+        //    controls.target = cameraTargetPosition;
+        //}
 
         //开启相机阴影渲染
         renderer.shadowMap.enabled = true;
@@ -279,5 +284,6 @@ function initInfo(node) {
             initInfo(node.children[i]);
         }
     }
+
     window.onload = start;
     window.addEventListener("resize", onResize, false);
