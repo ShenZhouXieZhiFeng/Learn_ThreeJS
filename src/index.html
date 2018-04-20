@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <head>
@@ -7,42 +7,83 @@
     <title>Hello World!</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.css">
+    <script type="text/javascript" src="js/three.js"></script>
+    <script type="text/javascript" src="js/controls/OrbitControls.js"></script>
+    <script type="text/javascript" src="js/jquery-1.9.0.js"></script>
+    <script type="text/javascript" src="js/libs/jszip.js"></script>
+    <script type="text/javascript" src="js/libs/jszip-utils.js"></script>
+    <script type="text/javascript" src="js/libs/lzma.js"></script>
+    <script type="text/javascript" src="lib/gzip/pako.js"></script>
 </head>
 
 <body>
-    <div id="container">
-        <h2 id="greeting">Loading ...</h2>
-        <canvas id="3dcube"></canvas>
-        <p>If TypeScript said "Hello," it worked!</p>
-        <p>If there's no cube above, your browser doesn't support WebGL. Sorry. =/</p>
-        <br>
-        <p>
-            <a href="https://github.com/selbyk/three.ts">
-                <!-- for 32px font icons -->
-                <span class="mega-octicon octicon-mark-github"></span>
-                <br>
-                <span class="octicon octicon-logo-github"></span>
-            </a>
-        </p>
-    </div>
-    <script>
-        (function(i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r;
-            i[r] = i[r] || function() {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date();
-            a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0];
-            a.async = 1;
-            a.src = g;
-            m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-
-        ga('create', 'UA-48749144-3', 'auto');
-        ga('send', 'pageview');
+    <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.js"></script>-->
+    <script id="fragment_ShaderDepth" type="x-shader/x-fragment">
+        #include
+        <packing>
+            uniform sampler2D texture;
+            varying vec2 vUV;
+            void main() {
+            vec4 pixel = texture2D( texture, vUV );
+            if ( pixel.a < 0.5 ) discard;
+            gl_FragData[ 0 ] = packDepthToRGBA( gl_FragCoord.z );
+            }
     </script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.js"></script>
+
+    <script id="vertex_ShaderDepth" type="x-shader/x-vertex">
+        varying vec2 vUV;
+        void main() {
+        vUV = 1.0 * uv;
+        vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+        gl_Position = projectionMatrix * mvPosition;
+        }
+    </script>
+
+    <script id="fragment_TerrainShader" type="x-shader/x-fragment">
+        uniform float scale;
+        uniform sampler2D texture1;
+        uniform sampler2D texture2;
+        uniform sampler2D texture3;
+        uniform sampler2D texture4;
+        uniform sampler2D texture5;
+        uniform sampler2D texture6;
+        uniform sampler2D texture7;
+
+        uniform sampler2D splatAlpha1;
+        uniform sampler2D splatAlpha2;
+        varying vec2 vUv;
+        void main( void ) {
+        vec3 lay1 = texture2D(texture1, scale * vUv).rgb;
+        vec3 lay2 = texture2D(texture2, scale * vUv).rgb;
+        vec3 lay3 = texture2D(texture3, scale * vUv).rgb;
+        vec3 lay4 = texture2D(texture4, scale * vUv).rgb;
+        vec3 lay5 = texture2D(texture5, scale * vUv).rgb;
+        vec3 lay6 = texture2D(texture6, scale * vUv).rgb;
+        vec3 lay7 = texture2D(texture7, scale * vUv).rgb;
+
+        vec3 splat1 = texture2D(splatAlpha1, vUv).rgb;
+        vec3 splat2 = texture2D(splatAlpha2, vUv).rgb;
+
+        vec3 color = lay1 * splat1.r  + lay2 * splat1.g + lay3 * splat1.b + lay4 *(1.0-splat1.r)*(1.0-splat1.g)*(1.0-splat1.b)* (1.0 - splat2.r) + lay5 * splat2.r +  lay6 * splat2.g +  lay7 * splat2.b ;
+        color = color *1.35;
+        gl_FragColor = vec4( color , 0 );
+        }
+    </script>
+
+    <script id="vertex_TerrainShader" type="x-shader/x-vertex">
+        varying vec2 vUv;
+        void main()
+        {
+        vUv = uv;
+        vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+        gl_Position = projectionMatrix * mvPosition;
+        }
+
+    </script>
+
+    <div id="WebGL_Output"></div>
+    <!--<script src="lib/loader.js"></script>-->
     <script src="bundle.js"></script>
 </body>
 

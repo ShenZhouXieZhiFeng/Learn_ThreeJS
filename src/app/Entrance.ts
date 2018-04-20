@@ -4,7 +4,7 @@ export default class Entrance
 {
     constructor()
     {
-
+        
     }
 
     public show()
