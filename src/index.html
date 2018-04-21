@@ -4,9 +4,11 @@
 <head>
     <meta charset="UTF-8" />
     <title>WebGL</title>
-    <script type="text/javascript" src="js/three.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/92/three.js"></script>
+    <!--<script type="text/javascript" src="js/three.js"></script>-->
+    <!--<script type="text/javascript" src="js/jquery-1.9.0.js"></script>-->
     <script type="text/javascript" src="js/controls/OrbitControls.js"></script>
-    <script type="text/javascript" src="js/jquery-1.9.0.js"></script>
     <script type="text/javascript" src="js/libs/jszip.js"></script>
     <script type="text/javascript" src="js/libs/jszip-utils.js"></script>
     <script type="text/javascript" src="js/libs/lzma.js"></script>
@@ -20,8 +22,6 @@
 </head>
 
 <body>
-    <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js"></script>-->
-    <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.js"></script>-->
     <script id="fragment_ShaderDepth" type="x-shader/x-fragment">
         #include
         <packing>
@@ -85,7 +85,8 @@
 
     </script>
 
-    <div id="WebGL_Output"></div>
+    <div id="container"></div>
+    <!--<div id="WebGL_Output"></div>-->
     <script src="bundle.js"></script>
     <script src="loader.js"></script>
 </body>

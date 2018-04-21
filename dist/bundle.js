@@ -43,32 +43,37 @@ var GameManager = /** @class */ (function () {
     function GameManager() {
         this.gameMain = null;
         this.player = null;
+        this.moveSpeed = 0.2;
     }
     GameManager.prototype.Init = function () {
+        var _this = this;
         console.log("GameManager init");
         this.player = GameMain_1.default.instance.scene.getObjectByName("player");
         //document.onmousedown = GameManager.instance.onKeyDown;
         //document.onkeyup = GameManager.instance.onKeyUp;
+        document.ontouchmove = this.onTouchMove;
+        document.onclick = function () { document.onmousemove = _this.onTouchMove; };
         this.test();
     };
     GameManager.prototype.test = function () {
-        //GameMain.instance.camera.position.x = this.player.position.x;
-        //GameMain.instance.camera.position.y = this.player.position.y + 10;
-        //GameMain.instance.camera.position.z = this.player.position.z;
-        //GameMain.instance.camera.lookAt(this.player.position);
-        //this.player.rotation.x = 0;
-        //this.player.rotation.y = 0;
-        //this.player.rotation.z = 0;
     };
     GameManager.prototype.GameUpdate = function () {
         //this.player.position.x += 0.2;//右
         //this.player.position.y += 0.2;//上
         //this.player.position.z += 0.2;//后
+        this.player.position.z -= 0.1; //前
     };
-    GameManager.prototype.onKeyDown = function (event) {
-        //console.log()
-    };
-    GameManager.prototype.onKeyUp = function (event) {
+    GameManager.prototype.onTouchMove = function (event) {
+        var curX = event.clientX;
+        if (this.preClientX < curX) {
+            //console.log("右滑动");
+            GameManager.instance.player.position.x += GameManager.instance.moveSpeed;
+        }
+        else if (this.preClientX > curX) {
+            //console.log("左滑动");
+            GameManager.instance.player.position.x -= GameManager.instance.moveSpeed;
+        }
+        this.preClientX = curX;
     };
     GameManager.instance = new GameManager();
     return GameManager;

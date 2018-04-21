@@ -3,9 +3,15 @@
       "src/main.ts"
     ],
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "noImplicitAny": false, //false允许使用any
     "experimentalDecorators": true,
-    "allowUnreachableCode": true //不可达的代码不报错
+    "allowUnreachableCode": true, //不可达的代码不报错
+    "allowSyntheticDefaultImports": true,
+    "removeComments": true,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "suppressExcessPropertyErrors": true,
+    "suppressImplicitAnyIndexErrors": true
   }
 }

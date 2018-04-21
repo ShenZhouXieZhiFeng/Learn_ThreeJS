@@ -6,6 +6,8 @@ export default class GameManager {
     public gameMain: GameMain = null;
     public player: THREE.Object3D = null;
 
+    public moveSpeed = 0.2;
+
     constructor()
     { }
 
@@ -15,18 +17,14 @@ export default class GameManager {
         this.player = GameMain.instance.scene.getObjectByName("player");
         //document.onmousedown = GameManager.instance.onKeyDown;
         //document.onkeyup = GameManager.instance.onKeyUp;
+        document.ontouchmove = this.onTouchMove;
+        document.onclick = () => { document.onmousemove = this.onTouchMove; };
         this.test();
     }
 
     public test()
     {
-        //GameMain.instance.camera.position.x = this.player.position.x;
-        //GameMain.instance.camera.position.y = this.player.position.y + 10;
-        //GameMain.instance.camera.position.z = this.player.position.z;
-        //GameMain.instance.camera.lookAt(this.player.position);
-        //this.player.rotation.x = 0;
-        //this.player.rotation.y = 0;
-        //this.player.rotation.z = 0;
+
     }
 
     public GameUpdate()
@@ -34,16 +32,22 @@ export default class GameManager {
         //this.player.position.x += 0.2;//右
         //this.player.position.y += 0.2;//上
         //this.player.position.z += 0.2;//后
-
+        this.player.position.z -= 0.1;//前
     }
 
-    public onKeyDown(event)
+    private preClientX;
+    public onTouchMove(event)
     {
-        //console.log()
-    }
-
-    public onKeyUp(event)
-    {
-
+        let curX = event.clientX;
+        if (this.preClientX < curX) {
+            //console.log("右滑动");
+            GameManager.instance.player.position.x += GameManager.instance.moveSpeed;
+        }
+        else if (this.preClientX > curX)
+        {
+            //console.log("左滑动");
+            GameManager.instance.player.position.x -= GameManager.instance.moveSpeed;
+        }
+        this.preClientX = curX;
     }
 }

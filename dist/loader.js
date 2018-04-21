@@ -1,17 +1,22 @@
 
-    // 模块主体
-    //变量在main.ts中定义,在这里赋值
+var SCREEN_WIDTH = 1080;
+var SCREEN_HEIGHT = 1920;
+
 var scene = new THREE.Scene();
 var loader = new THREE.ObjectLoader();
 var renderer = new THREE.WebGLRenderer();
 var camera, controls;
-
 var mixer;
 var clock = new THREE.Clock();
 var loadComplete = false;
 
+var container = document.getElementById('container');
+
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+container.appendChild(renderer.domElement);
+
 //var rootPath = "obj/Sky_Cubemap";
-//E:/work/projects/Github/Learn_ThreeJS/dist/obj/
 var rootPath = "obj/01";
 
 function onStartEnd()
@@ -178,22 +183,14 @@ function initInfo(node) {
         scene.fog = new THREE.Fog(node.fog.color, node.fog.near, node.fog.far);
     }
 
-    //        if( node instanceof  THREE.Mesh)
-    //        {
-    //            node.layer = 1;
-    //            console.log( node );
-    //            var sceneJson = scene.toJSON();
-    //            console.log( JSON.stringify( sceneJson));
-    //        }
-
     //获取动画物体并且播放动画
-    if (node.animations) {
-        var sceneAnimationClip = node.animations[0];
-        if (sceneAnimationClip != null) {
-            mixer = new THREE.AnimationMixer(node);
-            mixer.clipAction(sceneAnimationClip).play();
-        }
-    }
+    //if (node.animations) {
+    //    var sceneAnimationClip = node.animations[0];
+    //    if (sceneAnimationClip != null) {
+    //        mixer = new THREE.AnimationMixer(node);
+    //        mixer.clipAction(sceneAnimationClip).play();
+    //    }
+    //}
 
     //针对实时阴影透明贴图阴影显示问题
     if (node.material != null) {
@@ -252,11 +249,11 @@ function initInfo(node) {
         renderer.shadowMap.enabled = true;
         renderer.shadowMapSoft = true;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        renderer.shadowMap.renderReverseSided = false;
+        //renderer.shadowMap.renderReverseSided = false;
 
         //相机加载完成后刷新
         onResize();
-        document.getElementById("WebGL_Output").appendChild(renderer.domElement);
+        //document.getElementById("WebGL_Output").appendChild(renderer.domElement);
     }
 
     ///灯光实时阴影初始化设置
@@ -285,5 +282,5 @@ function initInfo(node) {
         }
     }
 
-    window.onload = start;
-    window.addEventListener("resize", onResize, false);
+window.onload = start;
+window.addEventListener("resize", onResize, false);

@@ -23,6 +23,7 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
+    "@types/three": "^0.91.10",
     "typescript": "^2.8.1"
   }
 }
